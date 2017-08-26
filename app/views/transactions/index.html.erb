@@ -1,0 +1,63 @@
+<%= render "search" %>
+<div class="container">
+  <% if @transactions.empty? %>
+  <div class="alert alert-info">
+    <em>No transactions found for "<%= params[:search_text] %>"</em>
+  </div>
+  <% elsif params[:search_text] == nil %>
+    <p>
+      <em><%= pluralize @transaction_count, 'transaction' %> found</em>
+    </p>
+  <% else %>
+    <p>
+      <em><%= pluralize @transaction_count, 'transaction' %> found: <strong><%= params[:search_text] %></strong></em>
+    </p>
+  <% end %>
+  <div class="panel panel-default">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Vehicle Type</th>
+          <th>License Plate Number</th>
+          <th>Date</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transactions.each do |transaction| %>
+          <tr class="<%= 'alert alert danger' if transaction.price == 0%>">
+            <% if $stolen_plates.include?(transaction.customer.license) %>
+              <td colspan="2">
+                STOLEN VEHICLE ALERT!<br>
+                License Plate Number: <%= transaction.customer.license.upcase %>
+              </td>
+              <td colspan="2">
+                <%= transaction.created_at.strftime("%m/%d/%Y") %>
+              </td>
+            <% else %>
+              <td>
+                <%= transaction.customer.vehicle_type.capitalize %>
+                <% if transaction.mud %>
+                  <br><small>*$2 charge for mud in bed</small>
+                <% end %>
+              </td>
+              <td>
+                <%= transaction.customer.license.upcase %>
+              </td>
+              <td>
+                <%= transaction.created_at.strftime("%m/%d/%Y") %>
+              </td>
+              <td>
+                  <%= number_to_currency(transaction.price/100) %>
+                  <% if transaction.discount != 0 %>
+                    <br><small class="discount"><%= number_to_percentage(transaction.discount * 100, precision: 0) %> off!</small>
+                  <% end %>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <nav aria-label="Page navigation"><%= paginate @transactions %></nav>
+</div>

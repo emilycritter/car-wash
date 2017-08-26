@@ -14,3 +14,23 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+var ready = function() {
+  $(function () {
+    $('.btn-radio').click(function(e) {
+      $('.btn-radio').not(this).removeClass('active')
+    		.siblings('input').prop('checked',false)
+        .siblings('.img-radio').css('opacity','0.5');
+    	$(this).addClass('active')
+        .siblings('input').prop('checked',true)
+    		.siblings('.img-radio').css('opacity','1');
+      if ($(this).siblings('input').attr('id') == 'truck') {
+        $('.truck-options').slideDown();
+      } else {
+        $('.truck-options').slideUp();
+      }
+    });
+  });
+};
+
+$(document).ready(ready);
+$(document).on('turbolinks:load', ready);

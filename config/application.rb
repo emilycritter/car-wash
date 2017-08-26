@@ -22,5 +22,7 @@ module CarWash
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    $stolen_plates = ['1111111']
   end
 end

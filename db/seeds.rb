@@ -21,7 +21,6 @@ if Transaction.count == 0
     transaction.customer_id = customer.id
     transaction.mud = false
     transaction.bed_down = false
-    transaction.price = Transaction.calculate_price(customer)
     transaction.save
   end
 
@@ -44,7 +43,6 @@ if Transaction.count == 0
     transaction.customer = opt[:customer]
     transaction.mud = opt[:mud]
     transaction.bed_down = opt[:bed_down]
-    transaction.price = Transaction.calculate_price(opt[:customer], opt[:mud], opt[:bed_down])
     transaction.save
   end
 
