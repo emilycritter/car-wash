@@ -1,4 +1,5 @@
 class Transaction < ActiveRecord::Base
+  require 'securerandom'
   belongs_to :customer
   before_create :transaction_options
 
@@ -9,6 +10,7 @@ class Transaction < ActiveRecord::Base
     end
     self.discount = self.get_discount
     self.price = self.calculate_price
+    self.confirmation = SecureRandom.hex(4).upcase + '-' +  SecureRandom.hex(4).upcase
   end
 
   def get_discount

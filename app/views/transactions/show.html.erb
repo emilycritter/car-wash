@@ -1,10 +1,35 @@
-<%= @transaction.price %>
-<% if flash[:alert] %>
-  <div class="alert alert-danger"><%= flash[:alert] %></div>
-<% end %>
-<% if flash[:warning] %>
-  <div class="alert alert-warning"><%= flash[:warning] %></div>
-<% end %>
-<% if flash[:notice] %>
-  <div class="alert alert-notice"><%= flash[:notice] %></div>
-<% end %>
+<div class="container">
+  <% if flash[:alert] %>
+    <div class="alert alert-danger"><%= flash[:alert] %></div>
+  <% end %>
+  <% if flash[:warning] %>
+    <div class="alert alert-warning"><%= flash[:warning] %></div>
+  <% end %>
+  <% if flash[:notice] %>
+    <div class="alert alert-notice"><%= flash[:notice] %></div>
+  <% end %>
+  <div class="row">
+    <div class="col-md-6 receipt">
+      <div class="thumbnail">
+        <div class="caption">
+          <h3>Thank you for purchasing a car wash!</h3>
+          <p><strong><small>Confirmation Number: <%= @transaction.confirmation %></small></strong></p>
+          <% if @transaction.discount != 0 %>
+            <div class="discount alert alert-success">
+              You received <%= number_to_percentage(@transaction.discount * 100, precision: 0) %> off!
+            </div>
+          <% end %>
+          <p>
+            Vehicle Type: <%= @transaction.customer.vehicle_type.capitalize %>
+            <% if @transaction.mud %>
+              <br><small>*$2 charge for mud in bed</small>
+            <% end %>
+          </p>
+          <p>License: <%= @transaction.customer.license.upcase %></p>
+          <p><strong>Total: <%= number_to_currency(@transaction.price/100) %></strong></p>
+          <p><%= link_to "Purchase another wash!", new_transaction_path, class: "btn btn-primary" %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

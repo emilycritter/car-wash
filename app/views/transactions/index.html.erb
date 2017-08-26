@@ -42,7 +42,8 @@
                 <% end %>
               </td>
               <td>
-                <%= transaction.customer.license.upcase %>
+                <%= transaction.customer.license.upcase %><br>
+                <small><%= transaction.confirmation %></small>
               </td>
               <td>
                 <%= transaction.created_at.strftime("%m/%d/%Y") %>
