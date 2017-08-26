@@ -9,6 +9,11 @@
 * If the vehicle comes in a second time, they get 50% off.
 * If the license plate equals 1111111, the vehicle is stolen and does not get a car wash
 
+## Assumptions
+* The following assumptions were made based on this statement: "If the vehicle comes in a second time, they get 50% off."
+  * 50% discount taken *after* any additional charges
+  * Every other *paid* visit receives this discount
+
 ## Requirements
 
 * [Ruby 2.3.1](https://www.ruby-lang.org/en/downloads/)
