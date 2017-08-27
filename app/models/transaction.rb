@@ -1,6 +1,7 @@
 class Transaction < ActiveRecord::Base
   require 'securerandom'
   belongs_to :customer
+  validates :customer_id, :presence => true
   before_create :transaction_options
 
   def transaction_options
@@ -9,8 +10,10 @@ class Transaction < ActiveRecord::Base
       self.mud = 0
     end
     self.discount = self.get_discount
+    unless $stolen_plates.include?(self.customer.license) || self.bed_down == true
+      self.confirmation = SecureRandom.hex(4).upcase + '-' +  SecureRandom.hex(4).upcase
+    end
     self.price = self.calculate_price
-    self.confirmation = SecureRandom.hex(4).upcase + '-' +  SecureRandom.hex(4).upcase
   end
 
   def get_discount
@@ -19,7 +22,7 @@ class Transaction < ActiveRecord::Base
   end
 
   def calculate_price
-    if $stolen_plates.include?(self.customer.license) || self.bed_down == true
+    if self.confirmation.nil?
       0
     else
       base_price = self.customer.vehicle_type == 'truck' ? 1000 : 500
