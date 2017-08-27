@@ -2,9 +2,6 @@
   <% if flash[:alert] %>
     <div class="alert alert-danger"><%= flash[:alert] %></div>
   <% end %>
-  <% if flash[:warning] %>
-    <div class="alert alert-warning"><%= flash[:warning] %></div>
-  <% end %>
   <% if flash[:notice] %>
     <div class="alert alert-notice"><%= flash[:notice] %></div>
   <% end %>
@@ -12,7 +9,7 @@
     <div class="col-md-6 receipt">
       <div class="thumbnail">
         <div class="caption">
-          <% if flash[:warning] || flash[:alert] %>
+          <% if !flash[:alert] %>
             <h3>Thank you for purchasing a car wash!</h3>
             <p><strong><small>Confirmation Number: <%= @transaction.confirmation %></small></strong></p>
             <% if @transaction.discount != 0 %>

@@ -15,20 +15,31 @@
 //= require turbolinks
 //= require_tree .
 var ready = function() {
+  var selectVehicleType = function(el){
+    $('.btn-radio').not(el).removeClass('active')
+      .siblings('input').prop('checked',false)
+      .siblings('.img-radio').css('opacity','0.5');
+    $(el).addClass('active')
+      .siblings('input').prop('checked',true)
+      .siblings('.img-radio').css('opacity','1');
+    if ($(el).siblings('input').attr('id') == 'truck') {
+      $('.truck-options').slideDown();
+    } else {
+      $('.truck-options').slideUp();
+    }
+  }
+
   $(function () {
     $('.btn-radio').click(function(e) {
-      $('.btn-radio').not(this).removeClass('active')
-    		.siblings('input').prop('checked',false)
-        .siblings('.img-radio').css('opacity','0.5');
-    	$(this).addClass('active')
-        .siblings('input').prop('checked',true)
-    		.siblings('.img-radio').css('opacity','1');
-      if ($(this).siblings('input').attr('id') == 'truck') {
-        $('.truck-options').slideDown();
-      } else {
-        $('.truck-options').slideUp();
-      }
+      selectVehicleType(this);
     });
+  });
+
+  $.each($('input[name="transaction[car]"]'), function(_index,el) {
+    if ($(el).val() == "on") {
+      var btn = $(el).siblings('.btn-radio');
+      selectVehicleType(btn);
+    }
   });
 };
 

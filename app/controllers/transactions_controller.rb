@@ -6,28 +6,26 @@ class TransactionsController < ApplicationController
 
   def create
     @transaction = Transaction.new transaction_params
+    vehicle_type = params[:transaction][:truck] == "on" ? "truck" : "car"
+    license = params[:transaction][:license].html_safe
     @customer = Customer.find_or_create_by(
-      license: params[:transaction][:license].html_safe,
-      vehicle_type: params[:transaction][:truck] == "on" ? "truck" : "car"
+      license: license,
+      vehicle_type: vehicle_type
     )
-    if @customer.id
-      session[:user_id] = @customer.id
+    if $stolen_plates.include?(license)
+      flash[:alert] = "Calling 911! Vehicle reported stolen."
+      render :new
+    elsif @customer.id
       @transaction.customer_id = @customer.id
-      case
-      when $stolen_plates.include?(@customer.license)
-        flash[:alert] = "Calling 911! Reporting stolen vehicle"
-      when @transaction.bed_down == true
-        flash[:warning] = "Sorry, we cannot offer you a car wash code at this time. Please ensure the bed of your truck is up and try again"
-      when @transaction.discount != 0
-        flash[:notice] = "Congratulations! You received a discount!"
-      end
+      flash[:alert] = "Sorry, we cannot offer you a car wash code at this time. Please ensure the bed of your truck is up and try again." if @transaction.bed_down == true
+      flash[:notice] = "Congratulations! You received a discount!" if @transaction.discount != 0
       redirect_to transaction_path(id: @transaction.id) if @transaction.save
     else
-      @customer = Customer.find_by(license: params[:transaction][:license])
-      if @customer && @customer.id
-        flash[:warning] = "The license plate you entered is associated with a different vehicle type. Please verify the plate number and try again"
+      @customer = Customer.find_by(license: license)
+      if @customer && @customer.vehicle_type != vehicle_type
+        flash[:warning] = "The license plate you entered is associated with a different vehicle type. Please verify the plate number and try again."
       else
-        flash[:warning] = "The license plate you entered is invalid. Please try again"
+        flash[:warning] = "The license plate you entered is invalid. Please try again."
       end
       render :new
     end

@@ -4,10 +4,15 @@
       <p class="alert alert-danger"><strong><%= error %></strong></p>
     <% end %>
   <% end %>
-  <% if flash[:warning] %>
-    <div class="alert alert-warning" role="alert"><%= flash[:warning] %></div>
+  <% if flash.present? %>
+    <% if flash[:warning] %>
+      <div class="alert alert-warning" role="alert"><%= flash[:warning] %></div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div class="alert alert-danger" role="alert"><%= flash[:alert] %></div>
+    <% end %>
+    <% flash.clear %>
   <% end %>
-
   <%= form_for @transaction do |f| %>
     <div class="form-group">
       <div class="input-group input-group-lg">
@@ -23,7 +28,7 @@
             <div class="caption">
               <%= image_tag "car_wash.png", class: "img-responsive img-radio" %>
               <button type="button" class="btn btn-primary btn-radio">Car</button>
-              <input type="checkbox" name="transaction[car]" id="car" class="hidden">
+              <input type="checkbox" name="transaction[car]" id="car" class="hidden" value="on">
             </div>
           </div>
         </div>
