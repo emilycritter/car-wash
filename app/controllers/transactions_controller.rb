@@ -39,9 +39,9 @@ class TransactionsController < ApplicationController
 
   def index
     if params[:search_text].present?
-      @transactions = Transaction.joins(:customer).where("customers.license LIKE ?", "%#{params[:search_text]}%")
+      @transactions = Transaction.joins(:customer).where("customers.license LIKE ?", "%#{params[:search_text]}%").order(created_at: 'DESC')
     else
-      @transactions = Transaction.all
+      @transactions = Transaction.all.order(created_at: 'DESC')
     end
     @transaction_count = @transactions.count
     @transactions = Kaminari.paginate_array(@transactions).page(params[:page]).per(10)
