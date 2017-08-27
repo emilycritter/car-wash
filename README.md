@@ -14,6 +14,8 @@
 * The following assumptions were made based on this statement: "If the vehicle comes in a second time, they get 50% off."
   * 50% discount taken *after* any additional charges
   * Every other *paid* visit receives this discount
+* License plates have a minimum length of 4 characters and a maximum length of 8 characters
+* License plates contain only alphanumeric characters
 
 ## Requirements
 
