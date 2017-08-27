@@ -28,6 +28,8 @@
   * `rake db:create`
   * `rake db:migrate`
   * `rake db:seed`
+3. To run tests, use:
+  * `rake spec`
 
 ## Usage
 1. Start the server by running: `rails s`
