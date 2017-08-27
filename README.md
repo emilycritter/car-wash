@@ -34,3 +34,10 @@
 ## Usage
 1. Start the server by running: `rails s`
 2. Open up the home page: `http://localhost:3000`
+
+## Room for improvement
+* Add more tests
+  * e.g. include controller tests
+* Incorporate browser testing and responsive web design (in addition to what Bootstrap includes by default)
+* Improve UI/UX
+* Make list of transactions sortable by column
